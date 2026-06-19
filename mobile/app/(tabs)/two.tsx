@@ -16,34 +16,7 @@ import { SymbolView } from "expo-symbols";
 
 const SUBS_STORAGE_KEY = "@subdue_subscriptions";
 
-const INITIAL_MOCK_SUBS: MobileSubscription[] = [
-  {
-    uuid: "mobile-uuid-netflix",
-    name: "Netflix (Mobile)",
-    amount: 35,
-    currency: "CNY",
-    cycle: "月",
-    category: "流媒体",
-    status: "active",
-    firstBilledAt: "2026-06-10",
-    isDeleted: 0,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    uuid: "mobile-uuid-chatgpt",
-    name: "ChatGPT Plus (Mobile)",
-    amount: 20,
-    currency: "USD",
-    cycle: "月",
-    category: "AI工具",
-    status: "active",
-    firstBilledAt: "2026-06-15",
-    isDeleted: 0,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }
-];
+const INITIAL_MOCK_SUBS: MobileSubscription[] = [];
 
 export default function TabTwoScreen() {
   const [pairingCode, setPairingCode] = useState("");
@@ -138,16 +111,16 @@ export default function TabTwoScreen() {
 
   const handleResetLocalData = async () => {
     Alert.alert(
-      "确认重置",
-      "您确定要清除所有手机本地账单并重置为演示数据吗？",
+      "确认清空",
+      "您确定要清除所有手机本地账单并还原为空白状态吗？",
       [
         { text: "取消", style: "cancel" },
         {
-          text: "确定重置",
+          text: "确定清空",
           style: "destructive",
           onPress: async () => {
             await AsyncStorage.setItem(SUBS_STORAGE_KEY, JSON.stringify(INITIAL_MOCK_SUBS));
-            Alert.alert("重置成功", "已将本地移动端账单恢复为初始 mock 状态");
+            Alert.alert("清空成功", "已成功清空本地所有账单数据。");
           }
         }
       ]
@@ -237,10 +210,10 @@ export default function TabTwoScreen() {
 
       {/* Danger Zone */}
       <View style={[styles.glassCard, styles.dangerCard]}>
-        <Text style={styles.dangerTitle}>⚠️ 开发者/测试调试工具</Text>
-        <Text style={styles.helperText}>清除手机本地 AsyncStorage 中的账单数据，并恢复为默认的测试列表：</Text>
+        <Text style={styles.dangerTitle}>⚠️ 危险区域</Text>
+        <Text style={styles.helperText}>清除手机本地 AsyncStorage 中的所有账单数据，恢复纯净空白状态：</Text>
         <TouchableOpacity style={styles.btnReset} onPress={handleResetLocalData}>
-          <Text style={styles.btnResetText}>重置本地数据库</Text>
+          <Text style={styles.btnResetText}>清空本地数据库</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
