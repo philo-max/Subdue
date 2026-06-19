@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { notificationHelper } from '@/services/notificationHelper';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -24,6 +25,15 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+
+  // Request notifications permission on app launch
+  useEffect(() => {
+    notificationHelper.requestPermission().then(granted => {
+      if (granted) {
+        console.log("Local notifications permission set up successfully");
+      }
+    });
+  }, []);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
