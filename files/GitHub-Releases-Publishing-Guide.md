@@ -14,11 +14,11 @@
 # 进入移动端根目录
 cd mobile
 
-# 登录您的 Expo 账号
-eas login
+# 登录您的 Expo 账号 (使用 npx 避免需要全局安装 eas-cli)
+npx eas login
 
 # 运行预览版编译（生成安装版 APK）
-eas build -p android --profile preview
+npx eas build -p android --profile preview
 ```
 *   **注意**：EAS 会询问您是否自动生成安卓证书，直接一路按 **回车 (Enter)** 确认即可。
 *   打包通常在 Expo 云端进行，需要 5~15 分钟。编译完成后，终端将输出一个以 `https://expo.dev/artifacts/` 开头的下载链接。
