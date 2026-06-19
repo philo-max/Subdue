@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ---------- Design System Variables ---------- */
+:root {
+  /* Common variables */
+  --font-display: 'Fraunces', serif;
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --border-radius-sm: 6px;
+  --border-radius-md: 9px;
+  --border-radius-lg: 14px;
+  --border-radius-xl: 20px;
+
+  /* Theme: Dark (Default) */
+  --color-ink: #11151C;
+  --color-surface: #181D26;
+  --color-surface-2: #1E2430;
+  --color-border: rgba(242, 237, 228, 0.07);
+  --color-border-hover: rgba(242, 237, 228, 0.14);
+  --color-paper: #F2EDE4;
+  --color-muted: #8B93A1;
+  --color-faint: #54596A;
+  --color-copper: #D9852B;
+  --color-copper-dim: rgba(217, 133, 43, 0.15);
+  --color-rust: #C75450;
+  --color-rust-dim: rgba(199, 84, 80, 0.15);
+  --color-sage: #6FA287;
+  --color-sage-dim: rgba(111, 162, 135, 0.15);
+  --gradient-brand: linear-gradient(135deg, #D9852B 0%, #B5651D 100%);
+  --shadow-premium: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='light'] {
+  /* Theme: Light */
+  --color-ink: #F9F8F6;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F2EDE4;
+  --color-border: rgba(17, 21, 28, 0.08);
+  --color-border-hover: rgba(17, 21, 28, 0.16);
+  --color-paper: #11151C;
+  --color-muted: #54596A;
+  --color-faint: #8B93A1;
+  --color-copper: #D9852B;
+  --color-copper-dim: rgba(217, 133, 43, 0.1);
+  --color-rust: #C75450;
+  --color-rust-dim: rgba(199, 84, 80, 0.1);
+  --color-sage: #4E8367;
+  --color-sage-dim: rgba(78, 131, 103, 0.1);
+  --gradient-brand: linear-gradient(135deg, #D9852B 0%, #B5651D 100%);
+  --shadow-premium: 0 8px 32px rgba(17, 21, 28, 0.06);
+}
+
+/* ---------- Global Resets ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* ---------- Keyframe Animations ---------- */
+@keyframes slideIn {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------- Utility Classes ---------- */
+.animate-slide-in {
+  animation: slideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Premium Glassmorphism Card styling */
+.glass-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-faint);
+}
+
+/* Custom focus ring */
+input:focus, select:focus, button:focus-visible {
+  outline: 2px solid var(--color-copper);
+  outline-offset: 1px;
+}
+
+/* Accessible hidden element style */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
