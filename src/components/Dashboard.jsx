@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Calendar, AlertTriangle } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Calendar, AlertTriangle, Lightbulb, BellRing } from "lucide-react";
 import { currencyService } from "../services/currency";
 
 const CATEGORY_COLORS = {
@@ -23,7 +23,18 @@ function getMonthlyEquivalent(amount, cycle) {
 
 export default function Dashboard({ subscriptions, settings }) {
   const [selectedOffset, setSelectedOffset] = useState(0); // 0 = today, 1 = tomorrow, etc.
+  const [intelligence, setIntelligence] = useState(null);
   const primaryCurrency = settings.primaryCurrency || "CNY";
+
+  useEffect(() => {
+    fetch("/subdue_discounts.json")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Offline or no discounts file generated yet");
+      })
+      .then((data) => setIntelligence(data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const activeSubs = useMemo(() => {
     return subscriptions.filter((s) => s.status === "active");
@@ -362,6 +373,98 @@ export default function Dashboard({ subscriptions, settings }) {
           </div>
         </div>
       </div>
+
+      {/* Intelligence Center Section */}
+      {intelligence && (
+        <div className="glass-card" style={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "10px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--color-border)", paddingBottom: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "16px", fontWeight: 700, color: "var(--color-paper)" }}>
+              <Lightbulb size={18} style={{ color: "var(--color-copper)" }} /> 订阅刺客 · 全球情报搜集站
+            </div>
+            <div style={{ fontSize: "11px", color: "var(--color-faint)", fontFamily: "var(--font-mono)" }}>
+              最后情报搜集时间: {intelligence.last_updated}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+            {/* Left Col: Scraped Alerts */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13.5px", fontWeight: 600, color: "var(--color-paper)", opacity: 0.9 }}>
+                <BellRing size={14} style={{ color: "var(--color-rust)" }} /> 实时价格变动与优惠动态
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {intelligence.alerts.map((alert, idx) => (
+                  <a 
+                    key={idx} 
+                    href={alert.link || "#"} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover-card"
+                    style={{
+                      display: "block",
+                      backgroundColor: "rgba(255, 255, 255, 0.015)",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--border-radius-sm)",
+                      padding: "12px",
+                      textDecoration: "none",
+                      transition: "var(--transition-smooth)"
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "6px", gap: "10px" }}>
+                      <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--color-paper)" }}>{alert.title}</span>
+                      <span style={{ fontSize: "10px", color: "var(--color-copper)", fontWeight: 600, whiteSpace: "nowrap" }}>{alert.source}</span>
+                    </div>
+                    <p style={{ fontSize: "11.5px", color: "var(--color-muted)", lineHeight: 1.5, margin: 0 }}>
+                      {alert.summary}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Col: Saving Guides */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13.5px", fontWeight: 600, color: "var(--color-paper)", opacity: 0.9 }}>
+                💡 极客省钱秘籍推荐
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {intelligence.tips.map((tip, idx) => (
+                  <div 
+                    key={idx}
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.015)",
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--border-radius-sm)",
+                      padding: "12px"
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                      <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--color-paper)" }}>
+                        {tip.title}
+                      </span>
+                      <span 
+                        style={{ 
+                          fontSize: "9.5px", 
+                          backgroundColor: "rgba(217, 133, 43, 0.12)", 
+                          color: "var(--color-copper)", 
+                          padding: "2px 6px", 
+                          borderRadius: "4px", 
+                          fontWeight: 600 
+                        }}
+                      >
+                        {tip.service}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: "11.5px", color: "var(--color-muted)", lineHeight: 1.6, margin: 0 }}>
+                      {tip.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
