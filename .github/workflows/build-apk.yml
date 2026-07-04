@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # 仅在推送形如 v1.0.0 的 tag 时触发自动打包发布
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
