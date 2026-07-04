@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: mobile/package-lock.json
 
@@ -33,14 +33,18 @@ jobs:
       - name: Build APK on EAS
         run: |
           cd mobile
-          npx eas-cli build -p android --profile preview --non-interactive --local=false
+          eas build -p android --profile preview --non-interactive
 
       - name: Download APK from EAS Build
         run: |
           cd mobile
           # 提取最新一次构建的 APK 链接并下载
-          APK_URL=$(npx eas-cli build:list --platform android --profile preview --limit 1 --json --non-interactive | jq -r '.[0].artifacts.buildUrl')
-          curl -L $APK_URL -o subdue-mobile.apk
+          APK_URL=$(eas build:list --platform=android --status=finished --limit=1 --json --non-interactive | jq -r '.[0].artifacts.buildUrl // empty')
+          if [ -z "$APK_URL" ]; then
+            echo "Error: No build URL found"
+            exit 1
+          fi
+          curl -L "$APK_URL" -o subdue-mobile.apk
 
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
