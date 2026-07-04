@@ -1,0 +1,452 @@
+{
+  "project_root": "F:\\Subdue",
+  "selection_required": true,
+  "model_selection_required": true,
+  "confirmation_required": true,
+  "user_confirmed": true,
+  "target_pages": 60,
+  "lines_per_page": 50,
+  "target_lines": 3000,
+  "estimated_selected_lines": 5635,
+  "estimated_selected_pages": 112,
+  "estimated_all_candidate_lines": 8297,
+  "estimated_all_candidate_pages": 166,
+  "supplement_rule": "模型优先选择能体现软件核心功能和真实运行逻辑的源码；不足60页时再从其他相关源码中补充；候选源码仍不足时才生成全部代码材料。",
+  "confirmation_stage": "code-selection",
+  "next_action": "请由模型填写 草稿/代码文件选择.json 的抽取选择和选择理由，再让用户确认；确认后运行 confirm_stage.py --stage code-selection。",
+  "instructions": "The script only inventories source files. The model must choose selected/model_reason before user confirmation. Selected files are extracted in full with blank-only lines removed.",
+  "files": [
+    {
+      "path": "src/main.jsx",
+      "selected": true,
+      "line_count": 10,
+      "material_line_count": 9,
+      "priority": 0,
+      "selection_tier": "frontend",
+      "evidence": "入口文件证据",
+      "model_reason": "Web端入口文件，挂载React应用到DOM节点"
+    },
+    {
+      "path": "mobile/app/(tabs)/_layout.tsx",
+      "selected": false,
+      "line_count": 82,
+      "material_line_count": 79,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/app/(tabs)/index.tsx",
+      "selected": true,
+      "line_count": 671,
+      "material_line_count": 631,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": "移动端订阅看板首页，实现订阅列表展示、添加表单和统计摘要"
+    },
+    {
+      "path": "mobile/app/(tabs)/two.tsx",
+      "selected": true,
+      "line_count": 404,
+      "material_line_count": 381,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": "移动端同步助手页面，实现局域网配对连接和本地数据清除"
+    },
+    {
+      "path": "mobile/app/+html.tsx",
+      "selected": false,
+      "line_count": 39,
+      "material_line_count": 35,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/app/+not-found.tsx",
+      "selected": false,
+      "line_count": 40,
+      "material_line_count": 36,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/app/_layout.tsx",
+      "selected": true,
+      "line_count": 67,
+      "material_line_count": 55,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": "移动端根布局，配置导航栏和Tab切换"
+    },
+    {
+      "path": "mobile/app/modal.tsx",
+      "selected": true,
+      "line_count": 208,
+      "material_line_count": 196,
+      "priority": 20,
+      "selection_tier": "frontend",
+      "evidence": "页面文件证据",
+      "model_reason": "移动端关于页面，展示核心承诺和隐私声明信息"
+    },
+    {
+      "path": "mobile/services/billingCalculator.ts",
+      "selected": true,
+      "line_count": 76,
+      "material_line_count": 66,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "移动端账单计算器TypeScript版"
+    },
+    {
+      "path": "mobile/services/notificationHelper.ts",
+      "selected": true,
+      "line_count": 119,
+      "material_line_count": 99,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "移动端通知助手，封装本地推送通知调度逻辑"
+    },
+    {
+      "path": "mobile/services/serviceCatalog.ts",
+      "selected": true,
+      "line_count": 73,
+      "material_line_count": 66,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "移动端服务数据库TypeScript版，提供与Web端一致的模板匹配"
+    },
+    {
+      "path": "mobile/services/syncClient.ts",
+      "selected": true,
+      "line_count": 129,
+      "material_line_count": 114,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "移动端同步客户端，实现与服务端的配对和数据交换"
+    },
+    {
+      "path": "src/services/billingCalculator.js",
+      "selected": true,
+      "line_count": 73,
+      "material_line_count": 64,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "账单计算器，根据首次扣款日期和周期计算下次扣款日期和剩余天数"
+    },
+    {
+      "path": "src/services/billingParser.js",
+      "selected": true,
+      "line_count": 425,
+      "material_line_count": 375,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "CSV账单智能解析引擎，实现启发式列识别、商户聚合、周期检测和置信度评分"
+    },
+    {
+      "path": "src/services/currency.js",
+      "selected": true,
+      "line_count": 119,
+      "material_line_count": 104,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "多币种汇率服务，实现实时汇率获取、货币换算和格式化输出"
+    },
+    {
+      "path": "src/services/notification.js",
+      "selected": true,
+      "line_count": 72,
+      "material_line_count": 64,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "通知服务，根据用户设定提前天数判断是否需要发送到期提醒"
+    },
+    {
+      "path": "src/services/serviceCatalog.js",
+      "selected": true,
+      "line_count": 121,
+      "material_line_count": 112,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "内置服务数据库，包含70+订阅服务的模板数据、分类和匹配逻辑"
+    },
+    {
+      "path": "src/services/syncService.js",
+      "selected": true,
+      "line_count": 182,
+      "material_line_count": 164,
+      "priority": 30,
+      "selection_tier": "frontend",
+      "evidence": "数据交互文件证据",
+      "model_reason": "局域网同步服务，实现配对码生成、设备配对和LWW双向数据合并"
+    },
+    {
+      "path": "mobile/components/GlassCard.tsx",
+      "selected": true,
+      "line_count": 22,
+      "material_line_count": 19,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "移动端玻璃卡片容器组件，统一磨砂背景样式"
+    },
+    {
+      "path": "mobile/components/StatCard.tsx",
+      "selected": true,
+      "line_count": 77,
+      "material_line_count": 74,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "移动端统计卡片组件，展示月度总支出和订阅数量"
+    },
+    {
+      "path": "mobile/components/SubscriptionRow.tsx",
+      "selected": true,
+      "line_count": 110,
+      "material_line_count": 106,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "移动端订阅行组件，支持多币种显示和到期高亮"
+    },
+    {
+      "path": "mobile/components/Themed.tsx",
+      "selected": true,
+      "line_count": 45,
+      "material_line_count": 35,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "移动端主题组件，提供统一的颜色和字体变量"
+    },
+    {
+      "path": "mobile/components/useColorScheme.ts",
+      "selected": false,
+      "line_count": 6,
+      "material_line_count": 5,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/components/useColorScheme.web.ts",
+      "selected": false,
+      "line_count": 8,
+      "material_line_count": 8,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": ""
+    },
+    {
+      "path": "src/components/AddSubscriptionSidebar.jsx",
+      "selected": true,
+      "line_count": 588,
+      "material_line_count": 553,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "添加订阅侧边栏，实现服务模板搜索、智能文本解析、表单填写和自动补全"
+    },
+    {
+      "path": "src/components/Dashboard.jsx",
+      "selected": true,
+      "line_count": 470,
+      "material_line_count": 436,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "仪表盘看板核心页面，实现月度支出统计、30天扣费日历热力图、分类支出分布和情报中心展示"
+    },
+    {
+      "path": "src/components/Settings.jsx",
+      "selected": true,
+      "line_count": 919,
+      "material_line_count": 849,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "设置页面，包含偏好配置、CSV账单导入弹窗确认、局域网配对同步和汇率管理"
+    },
+    {
+      "path": "src/components/SubscriptionTable.jsx",
+      "selected": true,
+      "line_count": 281,
+      "material_line_count": 262,
+      "priority": 50,
+      "selection_tier": "frontend",
+      "evidence": "页面组成文件证据",
+      "model_reason": "订阅列表管理页面，实现搜索筛选、暂停恢复、编辑删除等CRUD操作"
+    },
+    {
+      "path": "files/app-brainstorm.jsx",
+      "selected": false,
+      "line_count": 536,
+      "material_line_count": 518,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "files/subdue-web-prototype.jsx",
+      "selected": false,
+      "line_count": 745,
+      "material_line_count": 710,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "files/subtracker-architecture.jsx",
+      "selected": false,
+      "line_count": 764,
+      "material_line_count": 746,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "index.html",
+      "selected": false,
+      "line_count": 14,
+      "material_line_count": 14,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/constants/Colors.ts",
+      "selected": false,
+      "line_count": 19,
+      "material_line_count": 18,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "mobile/expo-env.d.ts",
+      "selected": false,
+      "line_count": 3,
+      "material_line_count": 2,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "scripts/test_csv_parser.js",
+      "selected": false,
+      "line_count": 80,
+      "material_line_count": 69,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": ""
+    },
+    {
+      "path": "src/App.jsx",
+      "selected": true,
+      "line_count": 402,
+      "material_line_count": 358,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": "主应用组件，包含路由导航、全局状态管理、IndexedDB数据加载和订阅CRUD操作"
+    },
+    {
+      "path": "src/db/storage.js",
+      "selected": true,
+      "line_count": 148,
+      "material_line_count": 134,
+      "priority": 80,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": "IndexedDB数据库封装层，定义订阅和设置的数据模型与持久化操作"
+    },
+    {
+      "path": "src/index.css",
+      "selected": true,
+      "line_count": 169,
+      "material_line_count": 149,
+      "priority": 90,
+      "selection_tier": "frontend",
+      "evidence": "样式文件证据",
+      "model_reason": "全局样式文件，定义暗色主题变量、玻璃卡片样式和响应式布局"
+    },
+    {
+      "path": "mobile/eas.json",
+      "selected": false,
+      "line_count": 23,
+      "material_line_count": 23,
+      "priority": 100,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": ""
+    },
+    {
+      "path": "public/subdue_discounts.json",
+      "selected": false,
+      "line_count": 60,
+      "material_line_count": 60,
+      "priority": 100,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": ""
+    },
+    {
+      "path": "scripts/generate_test_csv.py",
+      "selected": false,
+      "line_count": 199,
+      "material_line_count": 174,
+      "priority": 100,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": ""
+    },
+    {
+      "path": "scripts/loc_stats.py",
+      "selected": false,
+      "line_count": 145,
+      "material_line_count": 122,
+      "priority": 100,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": ""
+    },
+    {
+      "path": "scripts/subdue_intelligence.py",
+      "selected": true,
+      "line_count": 184,
+      "material_line_count": 160,
+      "priority": 100,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Python省钱情报引擎，RSS爬虫获取订阅价格变动和优惠信息"
+    }
+  ],
+  "confirmation_note": "用户确认代码文件选择方案，27个文件5635行有效代码112页",
+  "confirmed_at": "2026-07-04T03:42:14+00:00"
+}

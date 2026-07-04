@@ -13,6 +13,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { syncClient, MobileSubscription } from "../../services/syncClient";
 import { SymbolView } from "expo-symbols";
+import { GlassCard } from "../../components/GlassCard";
 
 const SUBS_STORAGE_KEY = "@subdue_subscriptions";
 
@@ -130,16 +131,16 @@ export default function TabTwoScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Device Info */}
-      <View style={styles.glassCard}>
+      <GlassCard>
         <View style={styles.deviceHeader}>
           <SymbolView name="phone.fill" tintColor="#8B93A1" size={18} />
           <Text style={styles.cardSubtitle}>当前设备标识</Text>
         </View>
         <Text style={styles.deviceNameText}>{deviceName}</Text>
-      </View>
+      </GlassCard>
 
       {/* Sync pairing panel */}
-      <View style={styles.glassCard}>
+      <GlassCard>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>📡 局域网配对同步</Text>
           <View style={[styles.badge, syncStatus === "connected" ? styles.badgeGreen : styles.badgeAmber]}>
@@ -186,10 +187,10 @@ export default function TabTwoScreen() {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </GlassCard>
 
       {/* Screenshot Assistant */}
-      <View style={styles.glassCard}>
+      <GlassCard>
         <Text style={styles.cardTitle}>📸 降低门槛：智能截图录入</Text>
         <Text style={styles.helperText}>
           直接将您微信或支付宝的“自动扣费管理协议”页面截图。App 将在本地运行智能解析，自动提取账单并填充，避免繁琐的手动输入：
@@ -206,18 +207,19 @@ export default function TabTwoScreen() {
             <Text style={styles.btnOcrText}>📸 模拟上传微信自动扣款截图</Text>
           </TouchableOpacity>
         )}
-      </View>
+      </GlassCard>
 
       {/* Danger Zone */}
-      <View style={[styles.glassCard, styles.dangerCard]}>
+      <GlassCard style={styles.dangerCard}>
         <Text style={styles.dangerTitle}>⚠️ 危险区域</Text>
         <Text style={styles.helperText}>清除手机本地 AsyncStorage 中的所有账单数据，恢复纯净空白状态：</Text>
         <TouchableOpacity style={styles.btnReset} onPress={handleResetLocalData}>
           <Text style={styles.btnResetText}>清空本地数据库</Text>
         </TouchableOpacity>
-      </View>
+      </GlassCard>
     </ScrollView>
   );
+
 }
 
 const styles = StyleSheet.create({

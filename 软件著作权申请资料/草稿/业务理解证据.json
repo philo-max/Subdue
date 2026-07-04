@@ -1,0 +1,315 @@
+{
+  "software_name": "Subdue订阅刺客",
+  "project_root": "F:\\Subdue",
+  "instruction": "本文件只收集证据，不决定行业、功能或手册结构。请由模型阅读这些证据以及必要的项目源码后，另行编写业务理解模型稿。",
+  "documents": [
+    {
+      "path": "README.md",
+      "size": 5714,
+      "headings": [
+        "Subdue — 订阅刺客追踪器 💸",
+        "🌟 核心特性",
+        "🛠️ 技术架构",
+        "技术栈",
+        "项目目录结构",
+        "🚀 快速开始",
+        "1. 运行 Web 客户端 (PC)",
+        "进入项目根目录，安装依赖",
+        "启动本地开发服务",
+        "2. 运行 Mobile 客户端 (iOS/Android)",
+        "进入移动端目录",
+        "安装依赖",
+        "启动 Expo 开发服务器 (按 'a' 运行于 Android 模拟器，或 'i' 运行于 iOS 模拟器)",
+        "3. 运行 Python 情报爬虫与测试数据生成器",
+        "启动 RSS 订阅资讯智能匹配",
+        "在 files/ 目录中生成供测试导入的支付宝/微信 CSV 账单",
+        "统计项目代码行数 (确认软著指标)",
+        "📑 软件著作权（软著）申报参考",
+        "指标盘点",
+        "申报代码材料推荐筛选路径",
+        "⚖️ 开源协议"
+      ],
+      "opening": "Subdue — 订阅刺客追踪器 💸 ![License: MIT](https://opensource.org/licenses/MIT) !Node Version !Python Version 一个 无广告、隐私优先、本地优先 的订阅管理与到期涨价提醒工具。帮您看清“钱到底花在哪儿”，并在服务自动续费前主动通过系统通知发出预警。 --- 🌟 核心特性 1. 隐私安全保障 (Privacy-First) ：默认所有数据存储在本地设备中（Web端使用 IndexedDB，移动端使用 AsyncStorage）。数据绝不上传云端。 2. 多端局域网同步 (LAN Sync) ：无需购买云服务。手机端与 PC 网页端之间直接通过局域网（LAN）建立本地双向加密安全通道，进行一键账单同步。 3. 智能 CSV 账单解析 (CSV Importer) ：支持导入微信、支付宝及银行导出的 CSV 账单。内置重复性交易识别算法，能从海量流水账单中智能挖掘周期性扣费（如月付/年付的订阅），引导一键归档。 4. 服务数据库与自动补全 (Service Catalog) ：内置 70+ 种主流全球及本土订阅服务（如 Netflix, Spotify, iCloud, ChatGPT, B站大会员等）的价格、计费周期和分类模板，输入即自动补全。 5. 本地通知预警 (Local Notification) ：智能计算下次扣款日期，并在扣款前 N 天（用户可自定义）在设备本地发起推送通知，防止遗忘取消免费试用而被强行续费。 6. 省钱情报引擎 (Python Intelligence) ：内置 Python 订阅价格爬虫与分析算法，支持本地分析最新涨价/降价变动，并提供拼车均摊、转区消费等极客专属“省钱秘籍”。 --- 🛠️ 技术架构 技术栈 Web 前端 ：React 19 + Vite 8 + Dexie.js (IndexedDB 包装器) + Lucide React Mobile 移动端 ：Expo 51 + React Native 0.74 + TypeScript +"
+    },
+    {
+      "path": "findings.md",
+      "size": 3573,
+      "headings": [
+        "发现与决策 - Subdue 项目",
+        "需求",
+        "研究发现",
+        "1. 代码库现状",
+        "2. Expo 模版残留组件列表及处理意见",
+        "技术决策",
+        "遇到的问题",
+        "资源"
+      ],
+      "opening": "发现与决策 - Subdue 项目 需求 1. 清理 Mobile 端模版残留 ：移除或重写 EditScreenInfo.tsx 等 Expo 模版组件，将实际业务代码的组件提取为可复用组件。 2. 重写 README ：以专业的 Subdue 介绍替换当前的 Vite 模版 README。 3. 功能补全 ：实现 CSV 账单导入（P1 功能，自动提取周期性订阅）、标签分类，以及基于内置数据库的自动补全功能。 4. 充实代码量 ：编写代码行统计脚本，将有效代码行数稳定推高至 6,000+ 行（以便于软著申请和代码质量提升）。 5. 软著准备 ：代码材料与操作手册的准备。 研究发现 1. 代码库现状 - Web 端 ( src/ ) ：基于 Vite + React，数据库采用 IndexedDB (使用 Dexie 封装于 storage.js)。 - 主要组件包括： App.jsx 、 Dashboard.jsx 、 Settings.jsx 、 SubscriptionTable.jsx 、 AddSubscriptionSidebar.jsx 。 - 主要服务： billingCalculator.js 、 billingParser.js 、 currency.js 、 notification.js 、 syncService.js 。 - Mobile 端 ( mobile/ ) ：基于 Expo + TypeScript + React Native。 - 页面结构采用 Expo Router 文件路由系统。 - mobile/app/(tabs)/index.tsx ：实现了本地订阅看板（CRUD 订阅，带 Modal 添加表单），但内部包含了许多局部的 UI 逻辑，可以提炼为组件。 - mobile/app/(tabs)/two.tsx ：实现了局域网配对同步和模拟截图 OCR 录入功能，以及本地数据清除设置。 - mobile/components/ 目录下全为 Expo 自动生成的 Boilerplate 组件（如 EditScreenInfo"
+    },
+    {
+      "path": "progress.md",
+      "size": 7739,
+      "headings": [
+        "进度日志 - Subdue 项目",
+        "会话：2026-07-04",
+        "阶段 1：项目资产盘点与规划",
+        "阶段 2：Mobile 端清理与业务组件重构",
+        "阶段 3：功能补全（CSV 导入与标签分类）",
+        "阶段 4：代码量充实与内置数据库扩充",
+        "阶段 5：README 重写与文档规范化",
+        "阶段 6：测试验证与材料输出",
+        "测试结果",
+        "错误日志",
+        "五问重启检查"
+      ],
+      "opening": "进度日志 - Subdue 项目 会话：2026-07-04 阶段 1：项目资产盘点与规划 - 状态： complete - 开始时间： 2026-07-04 04:36 - 执行的操作： - 读取并分析了 Web、Mobile、Python 后端的代码框架及目录结构。 - 阅读了 PRD 需求文档，明确了软著申报目标与 MVP 功能边界。 - 创建了 task plan.md 和 findings.md 用于跟踪项目计划和开发细节。 - 创建/修改的文件： - task plan.md - findings.md 阶段 2：Mobile 端清理与业务组件重构 - 状态： complete - 开始时间： 2026-07-04 04:42 - 执行的操作： - 用 PowerShell 命令物理删除了 5 个 Expo 默认模板冗余文件 ( EditScreenInfo.tsx , StyledText.tsx , ExternalLink.tsx , useClientOnlyValue.ts , useClientOnlyValue.web.ts )。 - 创建了 3 个可复用业务组件： GlassCard.tsx （磨砂卡片容器）、 SubscriptionRow.tsx （单条订阅卡片）、 StatCard.tsx （月度订阅开销统计卡片）。 - 修改 mobile/app/(tabs)/index.tsx 和 mobile/app/(tabs)/two.tsx ，导入并集成了新抽离的业务组件，清理了冗余样式和本地区域代码。 - 将 mobile/app/modal.tsx 页面改写为了精致的关于页面，包含“核心承诺（隐私、无广告、开源）”和“离线与同步说明”。 - 创建/修改的文件： - GlassCard.tsx - SubscriptionRow.tsx - StatCard.tsx - index.tsx/index.tsx) - two.tsx/two.tsx) - modal.tsx 阶段 3：功能补全（CSV 导入与标签分类） - 状态： comp"
+    },
+    {
+      "path": "task_plan.md",
+      "size": 3091,
+      "headings": [
+        "任务计划：Subdue 软著申报准备与代码库完善",
+        "目标",
+        "当前阶段",
+        "各阶段",
+        "阶段 1：需求与发现",
+        "阶段 2：Mobile 端清理与业务组件重构",
+        "阶段 3：功能补全（CSV 导入与标签分类）",
+        "阶段 4：代码量充实与内置数据库扩充",
+        "阶段 5：README 重写与文档规范化",
+        "阶段 6：测试验证与材料输出",
+        "关键问题",
+        "已做决策",
+        "遇到的错误",
+        "备注"
+      ],
+      "opening": "任务计划：Subdue 软著申报准备与代码库完善 目标 清理 Mobile 端模板残留，补全 CSV 导入、服务匹配库等核心功能，将有效代码行数充实至 6,000+ 行，并重写 README，使项目达到软著申报的最佳状态。 当前阶段 已完成 各阶段 阶段 1：需求与发现 - [x] 理解用户关于软著申报和代码库完善的意图 - [x] 盘点 Web、Mobile、Python 后端现有代码及 PRD 需求 - [x] 将发现记录到 findings.md - 状态： complete 阶段 2：Mobile 端清理与业务组件重构 - [x] 删除 Expo 默认模板无用组件（如 EditScreenInfo.tsx 等） - [x] 提取 Mobile 端的可重用业务组件至 mobile/components （如 GlassCard.tsx 、 SubscriptionRow.tsx 、 StatCard.tsx ） - [x] 重构 app/(tabs)/index.tsx 和 app/(tabs)/two.tsx 引入提取的业务组件 - [x] 将 app/modal.tsx 改造成精美的“关于 Subdue”与“隐私声明”页面 - 状态： complete 阶段 3：功能补全（CSV 导入与标签分类） - [x] 在 Web 端和 Mobile 端实现 CSV 账单导入解析引擎（识别周期性扣款、智能打分、自动转换） - [x] 实现本地服务数据库（ServiceCatalog）与分类标签自动补全逻辑 - 状态： complete 阶段 4：代码量充实与内置数据库扩充 - [x] 编写丰富的内置订阅服务数据库（包含流媒体、软件、AI 工具等细分领域的 Logo、典型周期及定价数据，约增加 1000~2000 行有效数据与解析代码） - [x] 丰富 Python 后端订阅情报分析引擎 scripts/subdue intelligence.py （已完成基础功能，并配合新版 ServiceCatalog） - [x] 新增测试数据生成脚本和代码行统计脚本 - 状态："
+    },
+    {
+      "path": "files/GitHub-Releases-Publishing-Guide.md",
+      "size": 4777,
+      "headings": [
+        "Subdue — GitHub Releases APK 发布及自动打包教程 (GitHub Releases APK Distribution Guide)",
+        "第一阶段：手动打包与上传 APK",
+        "1. 运行 EAS 打包 APK",
+        "进入移动端根目录",
+        "登录您的 Expo 账号 (使用 npx 避免需要全局安装 eas-cli)",
+        "运行预览版编译（生成安装版 APK）",
+        "2. 在 GitHub 上创建 Release 并上传",
+        "第二阶段：进阶白嫖 —— 利用 GitHub Actions + EAS 实现提交时自动构建（可选）",
+        "1. 获取 EXPO 访问令牌",
+        "2. 配置 GitHub Repository Secrets",
+        "3. 创建 GitHub Action 工作流",
+        "[NEW] [build-apk.yml](file:///f:/Subdue/.github/workflows/build-apk.yml)",
+        "EAS 编译成功后会自动返回构建的 artifact URL",
+        "提取最新一次构建的 APK 链接并下载"
+      ],
+      "opening": "Subdue — GitHub Releases APK 发布及自动打包教程 (GitHub Releases APK Distribution Guide) 将打包好的 APK 部署到 GitHub Releases 供用户直接下载，是开源项目最主流、最便捷的分发方式。我们已经为您在 mobile/eas.json 中配置好了专门输出 APK 格式的打包配置。 以下是完整的本地打包、发布以及通过 GitHub Actions 实现自动化流程的详细指南。 --- 第一阶段：手动打包与上传 APK 1. 运行 EAS 打包 APK 在 mobile/ 根目录下，运行以下命令（使用 preview 配置文件以输出 .apk ）： 注意 ：EAS 会询问您是否自动生成安卓证书，直接一路按 回车 (Enter) 确认即可。 打包通常在 Expo 云端进行，需要 5~15 分钟。编译完成后，终端将输出一个以 https://expo.dev/artifacts/ 开头的下载链接。 点击该链接，即可下载最终的 subdue-mobile-xxx.apk 文件。 2. 在 GitHub 上创建 Release 并上传 1. 打开浏览器，访问您的 GitHub 仓库页面：github.com/philo-max/Subdue。 2. 在右侧栏找到 Releases ，点击 Create a new release (或 Draft a new release )。 3. 填写发布信息 ： Tag version ：例如 v1.0.0 （建议与 package.json 中的版本号保持一致）。 Release title ：例如 Subdue v1.0.0 - 隐私优先的订阅追踪器 。 Description ：简要说明本次版本的更新内容。 4. 上传 APK 文件 ： 将刚刚下载好的 .apk 文件拖拽到下方 Attach binaries 区域。 5. 发布 ： 点击最下方的 Publish release 按钮。 您的用户现在即可通过 GitHub 页面直接下载并安装该 APK！"
+    },
+    {
+      "path": "files/Google-Play-Publishing-Guide.md",
+      "size": 4869,
+      "headings": [
+        "Subdue — Google Play 上架保姆级教程 (Google Play Publishing Guide)",
+        "第一阶段：准备开发者账号 (Developer Account)",
+        "第二阶段：打包 App 生产文件 (Build AAB)",
+        "推荐使用 npx 直接登录与初始化，免去全局安装包管理器的烦恼：",
+        "第三阶段：准备商店素材 (Store Assets)",
+        "第四阶段：在控制台创建并配置应用 (Console Setup)",
+        "第五阶段：发布测试与上线 (Release & Testing)"
+      ],
+      "opening": "Subdue — Google Play 上架保姆级教程 (Google Play Publishing Guide) 针对 Expo (React Native) 打包的 Android 应用，上架 Google Play 的完整流程可以分为以下五个核心阶段： --- 第一阶段：准备开发者账号 (Developer Account) 1. 注册 Google 账号 ：准备一个常用且安全的 Google 账号。 2. 注册 Google Play Console ： 访问官方网站 Google Play Console。 按照提示填写基本信息，并支付 $25 美元 的一次性注册费用（需要准备一张支持境外支付的 Visa / MasterCard 双币信用卡）。 3. 身份验证 (Verification) ： 根据谷歌近年新规，注册后需要上传身份证/护照等进行实名认证，以证明开发者身份。 --- 第二阶段：打包 App 生产文件 (Build AAB) Google Play 现已强制要求提交 AAB (Android App Bundle) 格式，而不是传统的 APK 格式。使用 Expo 的 EAS Build 服务可以最简单地搞定打包与签名： 1. 配置并登录 EAS ： 在控制台运行以下命令登录您的 Expo 账号： 2. 生成签名与打包 ： 在 mobile/ 根目录下运行： 注：EAS 会自动帮您在云端生成安卓密钥库（Keystore）并安全托管，您只需要一路回车即可。 3. 下载打包文件 ： 打包完成后，控制台会输出一个链接，点击即可下载最终的 .aab 文件。 --- 第三阶段：准备商店素材 (Store Assets) 在等待打包时，可以着手准备上架所需的视觉与文字素材： 1. 应用描述 ： 直接使用我们之前为您草拟的 Subdue-App-Description.md 。 2. 隐私政策网址 (Privacy Policy URL) ： 谷歌要求必须提供一个可公开访问的隐私政策链接。 白嫖/简单做法 ：将 Subdue-Privacy-Policy."
+    },
+    {
+      "path": "files/Subdue-App-Description.md",
+      "size": 3379,
+      "headings": [
+        "Subdue — App Store & Google Play 应用描述 (App Description)",
+        "📖 详细描述 (Description)",
+        "✨ 核心亮点功能 (Key Features)",
+        "📊 1. 高颜值的订阅看板",
+        "📸 2. 降低门槛：免打字智能录入",
+        "📡 3. 局域网安全加密同步 (LAN Sync)",
+        "🔔 4. 到期与涨价主动提醒",
+        "💱 5. 实时多币种折算",
+        "🔒 我们的三条硬红线 (Why Subdue?)",
+        "🛠️ 技术极客？支持开源自部署"
+      ],
+      "opening": "Subdue — App Store & Google Play 应用描述 (App Description) 副标题/一句话简介 ： 订阅刺客追踪器 — 驯服自动扣费，保护隐私，无广告的本地首选记账助手。 --- 📖 详细描述 (Description) 您是否也遇到过这些烦恼？ 免费试用某个软件，忘记取消，结果被悄悄扣了一年的年费？ 各种流媒体、云网盘、AI工具、健身卡散落各处，算不清每个月到底为自动扣费花了多少钱？ 部分订阅服务偷偷涨价，直到收到扣费账单才猛然发现？ 想要用记账软件，却又担心个人的银行账单、财务隐私被上传到云端解析拿去卖广告？ 让 Subdue (订阅刺客) 来帮您彻底“驯服”自动扣费！ Subdue 是一款 无广告、隐私优先、代码开源 的订阅管理与记账工具。我们坚持“本地优先 (Local-First)”原则，把所有数据掌控权原封不动地还给您。 --- ✨ 核心亮点功能 (Key Features) 📊 1. 高颜值的订阅看板 告别简陋的表格！Subdue 拥有极具高级感的磨砂玻璃暗黑系视觉设计。 智能支出折算 ：无论月付、周付还是年付，自动按您的主货币统一折算并汇总展示，清晰掌握每月开销。 公历扣款日历 ：创新的日历网格热力图，标出每天需要扣费的订阅，今天扣了什么、明天将扣什么一目了然。 📸 2. 降低门槛：免打字智能录入 记账不需要繁琐的键盘输入！ 截图本地识别 ：直接把微信或支付宝的“自动扣费管理协议”页面截图，App 将在本地运行智能解析，自动提取服务名、金额和扣费周期并录入。 智能文本提取 ：直接复制扣费短信、支付宝/微信账单文本，核心引擎一键识别参数并填充。 📡 3. 局域网安全加密同步 (LAN Sync) 无云对账 ：没有云服务器，不上传敏感财务数据。只需通过 6 位安全配对码，PC 网页端和手机端即可在本地局域网内完成双向安全对账与合并。 🔔 4. 到期与涨价主动提醒 本地推送 ：在服务自动扣款前 N 天，手机本地调度系统通知提醒您，及时考虑是否取消订阅。 涨价检测 ：发现扣款金额与历史记录不符时，第一时间提醒，防止被悄悄“反向"
+    },
+    {
+      "path": "files/Subdue-Privacy-Policy.md",
+      "size": 3167,
+      "headings": [
+        "Subdue — 隐私政策 (Privacy Policy)",
+        "1. 核心隐私承诺（不可妥协的红线）",
+        "2. 数据收集与使用说明",
+        "2.1 本地离线使用（开源版 / 免费版）",
+        "2.2 局域网同步 (LAN Sync)",
+        "2.3 官方免费托管 Web 实例说明",
+        "3. 数据掌控权",
+        "4. 政策修改",
+        "5. 联系我们"
+      ],
+      "opening": "Subdue — 隐私政策 (Privacy Policy) 生效日期 ：2026-06-19 最近更新 ：2026-06-19 欢迎使用 Subdue (订阅刺客) ！我们非常重视您的隐私。本隐私政策旨在向您说明我们如何收集、使用、存储和保护您的个人信息。 --- 1. 核心隐私承诺（不可妥协的红线） 1. 绝对零广告 (Zero Ads) ：无论现在还是未来，Subdue 永远不会接入任何广告 SDK 或第三方广告分析追踪工具。我们绝不通过转让或销售您的个人数据来谋利。 2. 本地存储优先 (Local-First) ：除非您主动选择商业版云同步服务，Subdue 开源版的所有订阅数据（包括服务名称、扣款金额、账单详情等） 默认 100% 仅保存在您的本地设备上 （PC 端保存在浏览器 IndexedDB，手机端保存在 AsyncStorage），除您之外的任何人（包括我们）都无法读取该数据。 3. 开源代码审计 (Open Source) ：我们的核心引擎、数据模型与计算逻辑全部在 GitHub 开源。任何人、开发者均可随时对代码进行安全与隐私审计。 --- 2. 数据收集与使用说明 2.1 本地离线使用（开源版 / 免费版） 当您仅在本地使用本软件时： 数据收集 ：我们 不收集 任何个人身份信息、设备指纹、位置数据或订阅记录。 汇率数据 ：若您使用多币种功能，App 可能会通过外部 API（如汇率接口）获取最新的全球货币比率。在此过程中，您的订阅金额及敏感数据 绝不会 随该请求一同发送。 2.2 局域网同步 (LAN Sync) 当您使用 PC 与手机端的局域网配对同步功能时： 所有的配对和数据传输 纯粹在您的内网局域网（LAN）中直接点对点进行 。 数据完全不经过我们的服务器，没有任何外网泄露风险。 2.3 官方免费托管 Web 实例说明 如果您访问我们官方部署的免费 Web 实例，而不是自己部署： 运行日志 ：我们仅保留网络运行所必需的最少服务器访问日志（如 IP 地址、请求时间，通常在 7 天内自动清理）。 业务数据 ：即使使用官方实例，您的订阅账单明细依"
+    },
+    {
+      "path": "files/Subdue-软著材料准备与排版指南.md",
+      "size": 7202,
+      "headings": [
+        "Subdue 软件著作权申报材料准备与排版指南",
+        "📅 申报核心材料清单",
+        "💻 1. 源代码材料排版规范与内容精选",
+        "📐 官方格式排版要求",
+        "📊 代码行数盘点 (项目现状)",
+        "📂 60 页申报代码筛选推荐 (共 3,000 行左右)",
+        "🔹 前 30 页 (约 1,500 行，偏向 Web 端核心逻辑与存储)",
+        "🔹 后 30 页 (约 1,500 行，偏向 移动端业务 与 Python 分析端)",
+        "📖 2. 软件用户操作手册大纲指南",
+        "📑 目录",
+        "第一章 系统概述",
+        "第二章 安装与部署运行",
+        "第三章 Web 客户端功能操作说明（含图）",
+        "第四章 Mobile 客户端功能操作说明（含图）",
+        "第五章 后端情报数据更新（可选）"
+      ],
+      "opening": "Subdue 软件著作权申报材料准备与排版指南 本指南旨在帮助您为 Subdue（订阅刺客追踪器） 准备国家版权局软件著作权登记（简称“软著”）的申报材料，确保代码和说明书符合官方审核要求，一次性顺利通过。 --- 📅 申报核心材料清单 软著申报通常需要提交以下两份核心文档： 1. 《计算机软件源代码材料》 （通常要求前后各 30 页，共 60 页，若总代码量不足 60 页则需全部提交）。 2. 《软件用户操作手册 / 设计说明书》 （不低于 15 页，需包含真实的界面截图和详细的功能操作说明）。 --- 💻 1. 源代码材料排版规范与内容精选 📐 官方格式排版要求 页眉 ：每页右上角写上软件全称及版本号（如： Subdue 订阅管理软件 v0.2.0 ），并加一条横线。 页脚 ：必须居中显示页码，格式为 第 X 页 或 第 X 页 共 60 页 （页码必须连续且严格等于 60 页）。 字体 ：推荐使用等宽字体（如 Courier New ）或五号宋体，确保代码排版整齐。 行距与行数 ：单倍行距， 每页必须不少于 50 行 （通常设为 50~55 行，空行和多行纯注释不计入行数）。 注释与敏感信息 ： 代码中 严禁 出现 Todo 、 Draft 、 Demo 、 Test 、 Fixme 等显得不完整的开发标记。 严禁 出现其他无关公司的版权声明（如 Copyright by (其他公司) ）。 建议清除大量的英文注释或占位符号，保留少量的中文业务注释以增强原创性外观。 📊 代码行数盘点 (项目现状) 通过运行工作区下的 python scripts/loc stats.py ，我们已为您盘点当前代码行数： 有效代码总数 ：约 5,830+ 行 （已剔除空行和注释）。 总物理行数 ： 6,700+ 行 。 可提供页数 ：按每页 50 行有效代码计，本系统 最多可提供 116 页材料 ，完全能满足且富余出 60 页的要求。 📂 60 页申报代码筛选推荐 (共 3,000 行左右) 为了让代码体现完整的“业务输入、数据库存取、算法分析和输出渲染”逻辑，推荐以下筛选路径："
+    },
+    {
+      "path": "files/订阅刺客追踪器-产品需求文档.md",
+      "size": 9625,
+      "headings": [
+        "Subdue — 产品需求文档 (PRD)",
+        "1. 产品概述",
+        "1.1 一句话定位",
+        "1.2 要解决的问题",
+        "1.3 产品原则（不可妥协的红线）",
+        "2. 目标用户画像",
+        "3. 版本范围速览",
+        "4. MVP 范围定义（Phase 1，对应路线图）",
+        "5. 核心功能详细规格",
+        "5.1 订阅管理（CRUD）",
+        "5.2 服务数据库与自动填充",
+        "5.3 仪表盘 / 统计",
+        "5.4 提醒通知",
+        "5.5 数据导入导出",
+        "5.6 设置",
+        "6. 核心用户流程",
+        "7. 数据模型（核心实体）",
+        "8. 非功能性需求",
+        "9. 成功指标",
+        "10. 不在 MVP 范围内（明确排除，避免范围蔓延）",
+        "11. 上架检查清单（App Store / Google Play）",
+        "已确认决策"
+      ],
+      "opening": "Subdue — 产品需求文档 (PRD) 版本 ：v0.2 日期 ：2026-06-19 状态 ：MVP 规划阶段（名称、托管策略、平台顺序已确定） --- 1. 产品概述 1.1 一句话定位 一个 无广告、隐私优先 的订阅管理工具，帮用户看清\"钱到底花在哪儿\"，并在涨价或自动续费前提醒他们。提供 开源自部署版 和 云端自动化商业版 两条路径。 1.2 要解决的问题 用户痛点 现状 我们的解法 --- --- --- 不知道自己订了多少服务 散落在各个 App / 银行账单里 一个仪表盘统一展示 免费试用忘记取消被扣款 没有任何提前提醒 到期前 N 天主动推送 服务悄悄涨价没发现 银行扣款记录不会主动告诉你 金额变化自动检测+提醒 不信任要订阅类 App 偷偷收集数据来卖广告 市面同类产品大多靠广告/卖数据盈利 开源可审计代码 + 零广告承诺 + 可选自部署 1.3 产品原则（不可妥协的红线） 1. 零广告 — 任何版本，永久不接入广告 SDK。 2. 隐私优先 — 默认本地存储；云端同步功能必须显式授权且可随时导出/删除全部数据。 3. 开源核心 — 核心引擎（数据模型、计算逻辑、UI）MIT 协议开源，任何人可审计、可自部署。 4. 优雅降级 — 商业版断网/不订阅 Pro 时，应退回到开源版功能，不锁死已录入的数据。 --- 2. 目标用户画像 Persona 特征 核心需求 对应版本 --- --- --- --- 极客 Alex 技术背景，重视隐私，不信任云服务 自部署、代码可审计、零遥测 开源版（自托管） 打工人 Mia 时间有限，订阅多（流媒体/云盘/健身/AI工具） 自动发现订阅，不想手动维护 商业版 Pro 学生 Leo 预算敏感，订阅少但每一笔都在意 免费够用，简单直观 开源版（官方托管的免费实例） 家庭主理人 Grace 管理全家 5+ 个订阅（流媒体共享、儿童 App） 家庭共享视图、谁在用什么 商业版 Family --- 3. 版本范围速览 详细技术拆分见此前的架构文档，这里只列产品边界。 开源版（Free / Self-Host） 手动录"
+    }
+  ],
+  "code_evidence": {
+    "project_name": "Subdue",
+    "software_name_candidate": "tmp vite",
+    "frameworks": [
+      "React",
+      "Vite"
+    ],
+    "language": "TypeScript、JavaScript、Python",
+    "routes": [
+      "/",
+      "/modal"
+    ],
+    "feature_name_candidates": [
+      "modal",
+      "mobile +html",
+      "mobile +not found",
+      "mobile modal",
+      "mobile layout",
+      "mobile two",
+      "billingCalculator",
+      "notificationHelper",
+      "serviceCatalog",
+      "syncClient",
+      "billingParser",
+      "currency",
+      "notification",
+      "syncService",
+      "GlassCard",
+      "StatCard",
+      "SubscriptionRow",
+      "Themed",
+      "useColorScheme",
+      "useColorScheme.web",
+      "AddSubscriptionSidebar",
+      "Dashboard",
+      "Settings",
+      "SubscriptionTable"
+    ],
+    "entry_files": [
+      "mobile/app/(tabs)/index.tsx",
+      "src/main.jsx"
+    ],
+    "page_files": [
+      "mobile/app/+html.tsx",
+      "mobile/app/+not-found.tsx",
+      "mobile/app/modal.tsx",
+      "mobile/app/_layout.tsx",
+      "mobile/app/(tabs)/two.tsx",
+      "mobile/app/(tabs)/_layout.tsx"
+    ],
+    "component_files": [
+      "mobile/components/GlassCard.tsx",
+      "mobile/components/StatCard.tsx",
+      "mobile/components/SubscriptionRow.tsx",
+      "mobile/components/Themed.tsx",
+      "mobile/components/useColorScheme.ts",
+      "mobile/components/useColorScheme.web.ts",
+      "src/components/AddSubscriptionSidebar.jsx",
+      "src/components/Dashboard.jsx",
+      "src/components/Settings.jsx",
+      "src/components/SubscriptionTable.jsx"
+    ],
+    "api_files": [
+      "mobile/services/billingCalculator.ts",
+      "mobile/services/notificationHelper.ts",
+      "mobile/services/serviceCatalog.ts",
+      "mobile/services/syncClient.ts",
+      "src/services/billingCalculator.js",
+      "src/services/billingParser.js",
+      "src/services/currency.js",
+      "src/services/notification.js",
+      "src/services/serviceCatalog.js",
+      "src/services/syncService.js"
+    ],
+    "run_command_candidates": [
+      "npm run dev",
+      "npm run preview"
+    ],
+    "package": {
+      "name": "tmp-vite",
+      "path": "package.json",
+      "version": "0.0.0",
+      "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint .",
+        "preview": "vite preview"
+      },
+      "dependency_names": [
+        "@eslint/js",
+        "@types/react",
+        "@types/react-dom",
+        "@vitejs/plugin-react",
+        "dexie",
+        "eslint",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-react-refresh",
+        "expo-symbols",
+        "globals",
+        "lucide-react",
+        "react",
+        "react-dom",
+        "vite"
+      ]
+    }
+  },
+  "external_research_notes": ""
+}

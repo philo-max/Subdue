@@ -1,0 +1,294 @@
+{
+  "software_name": "Subdue订阅管理软件",
+  "version": "V1.0",
+  "project_root": "F:\\Subdue",
+  "file_count": 27,
+  "material_line_count": 5662,
+  "source_line_count": 6164,
+  "selected_source_line_count": 5635,
+  "lines_per_page": 50,
+  "total_pages": 114,
+  "target_pages": 60,
+  "available_candidate_line_count": 8297,
+  "available_candidate_pages": 166,
+  "supplement_status": "候选源码可达到前30页/后30页要求",
+  "mode": "front30_back30",
+  "selection_file": "软件著作权申请资料\\草稿\\代码文件选择.json",
+  "outputs": [
+    "代码-前30页.md",
+    "代码-后30页.md"
+  ],
+  "files": [
+    {
+      "path": "src/main.jsx",
+      "source_line_count": 10,
+      "blank_line_count": 1,
+      "selected_line_start": 1,
+      "selected_line_end": 10,
+      "selected_line_count": 9,
+      "material_line_start": 1,
+      "material_line_end": 10
+    },
+    {
+      "path": "mobile/app/(tabs)/index.tsx",
+      "source_line_count": 671,
+      "blank_line_count": 40,
+      "selected_line_start": 1,
+      "selected_line_end": 671,
+      "selected_line_count": 631,
+      "material_line_start": 11,
+      "material_line_end": 642
+    },
+    {
+      "path": "mobile/app/(tabs)/two.tsx",
+      "source_line_count": 404,
+      "blank_line_count": 23,
+      "selected_line_start": 1,
+      "selected_line_end": 404,
+      "selected_line_count": 381,
+      "material_line_start": 643,
+      "material_line_end": 1024
+    },
+    {
+      "path": "mobile/app/_layout.tsx",
+      "source_line_count": 67,
+      "blank_line_count": 12,
+      "selected_line_start": 1,
+      "selected_line_end": 67,
+      "selected_line_count": 55,
+      "material_line_start": 1025,
+      "material_line_end": 1080
+    },
+    {
+      "path": "mobile/app/modal.tsx",
+      "source_line_count": 208,
+      "blank_line_count": 12,
+      "selected_line_start": 1,
+      "selected_line_end": 208,
+      "selected_line_count": 196,
+      "material_line_start": 1081,
+      "material_line_end": 1277
+    },
+    {
+      "path": "mobile/services/billingCalculator.ts",
+      "source_line_count": 76,
+      "blank_line_count": 10,
+      "selected_line_start": 1,
+      "selected_line_end": 76,
+      "selected_line_count": 66,
+      "material_line_start": 1278,
+      "material_line_end": 1344
+    },
+    {
+      "path": "mobile/services/notificationHelper.ts",
+      "source_line_count": 119,
+      "blank_line_count": 20,
+      "selected_line_start": 1,
+      "selected_line_end": 119,
+      "selected_line_count": 99,
+      "material_line_start": 1345,
+      "material_line_end": 1444
+    },
+    {
+      "path": "mobile/services/serviceCatalog.ts",
+      "source_line_count": 73,
+      "blank_line_count": 7,
+      "selected_line_start": 1,
+      "selected_line_end": 73,
+      "selected_line_count": 66,
+      "material_line_start": 1445,
+      "material_line_end": 1511
+    },
+    {
+      "path": "mobile/services/syncClient.ts",
+      "source_line_count": 129,
+      "blank_line_count": 15,
+      "selected_line_start": 1,
+      "selected_line_end": 129,
+      "selected_line_count": 114,
+      "material_line_start": 1512,
+      "material_line_end": 1626
+    },
+    {
+      "path": "src/services/billingCalculator.js",
+      "source_line_count": 73,
+      "blank_line_count": 9,
+      "selected_line_start": 1,
+      "selected_line_end": 73,
+      "selected_line_count": 64,
+      "material_line_start": 1627,
+      "material_line_end": 1691
+    },
+    {
+      "path": "src/services/billingParser.js",
+      "source_line_count": 425,
+      "blank_line_count": 50,
+      "selected_line_start": 1,
+      "selected_line_end": 425,
+      "selected_line_count": 375,
+      "material_line_start": 1692,
+      "material_line_end": 2067
+    },
+    {
+      "path": "src/services/currency.js",
+      "source_line_count": 119,
+      "blank_line_count": 15,
+      "selected_line_start": 1,
+      "selected_line_end": 119,
+      "selected_line_count": 104,
+      "material_line_start": 2068,
+      "material_line_end": 2172
+    },
+    {
+      "path": "src/services/notification.js",
+      "source_line_count": 72,
+      "blank_line_count": 8,
+      "selected_line_start": 1,
+      "selected_line_end": 72,
+      "selected_line_count": 64,
+      "material_line_start": 2173,
+      "material_line_end": 2237
+    },
+    {
+      "path": "src/services/serviceCatalog.js",
+      "source_line_count": 121,
+      "blank_line_count": 9,
+      "selected_line_start": 1,
+      "selected_line_end": 121,
+      "selected_line_count": 112,
+      "material_line_start": 2238,
+      "material_line_end": 2350
+    },
+    {
+      "path": "src/services/syncService.js",
+      "source_line_count": 182,
+      "blank_line_count": 18,
+      "selected_line_start": 1,
+      "selected_line_end": 182,
+      "selected_line_count": 164,
+      "material_line_start": 2351,
+      "material_line_end": 2515
+    },
+    {
+      "path": "mobile/components/GlassCard.tsx",
+      "source_line_count": 22,
+      "blank_line_count": 3,
+      "selected_line_start": 1,
+      "selected_line_end": 22,
+      "selected_line_count": 19,
+      "material_line_start": 2516,
+      "material_line_end": 2535
+    },
+    {
+      "path": "mobile/components/StatCard.tsx",
+      "source_line_count": 77,
+      "blank_line_count": 3,
+      "selected_line_start": 1,
+      "selected_line_end": 77,
+      "selected_line_count": 74,
+      "material_line_start": 2536,
+      "material_line_end": 2610
+    },
+    {
+      "path": "mobile/components/SubscriptionRow.tsx",
+      "source_line_count": 110,
+      "blank_line_count": 4,
+      "selected_line_start": 1,
+      "selected_line_end": 110,
+      "selected_line_count": 106,
+      "material_line_start": 2611,
+      "material_line_end": 2717
+    },
+    {
+      "path": "mobile/components/Themed.tsx",
+      "source_line_count": 45,
+      "blank_line_count": 10,
+      "selected_line_start": 1,
+      "selected_line_end": 45,
+      "selected_line_count": 35,
+      "material_line_start": 2718,
+      "material_line_end": 2753
+    },
+    {
+      "path": "src/components/AddSubscriptionSidebar.jsx",
+      "source_line_count": 588,
+      "blank_line_count": 35,
+      "selected_line_start": 1,
+      "selected_line_end": 588,
+      "selected_line_count": 553,
+      "material_line_start": 2754,
+      "material_line_end": 3307
+    },
+    {
+      "path": "src/components/Dashboard.jsx",
+      "source_line_count": 470,
+      "blank_line_count": 34,
+      "selected_line_start": 1,
+      "selected_line_end": 470,
+      "selected_line_count": 436,
+      "material_line_start": 3308,
+      "material_line_end": 3744
+    },
+    {
+      "path": "src/components/Settings.jsx",
+      "source_line_count": 919,
+      "blank_line_count": 70,
+      "selected_line_start": 1,
+      "selected_line_end": 919,
+      "selected_line_count": 849,
+      "material_line_start": 3745,
+      "material_line_end": 4594
+    },
+    {
+      "path": "src/components/SubscriptionTable.jsx",
+      "source_line_count": 281,
+      "blank_line_count": 19,
+      "selected_line_start": 1,
+      "selected_line_end": 281,
+      "selected_line_count": 262,
+      "material_line_start": 4595,
+      "material_line_end": 4857
+    },
+    {
+      "path": "src/App.jsx",
+      "source_line_count": 402,
+      "blank_line_count": 44,
+      "selected_line_start": 1,
+      "selected_line_end": 402,
+      "selected_line_count": 358,
+      "material_line_start": 4858,
+      "material_line_end": 5216
+    },
+    {
+      "path": "src/db/storage.js",
+      "source_line_count": 148,
+      "blank_line_count": 14,
+      "selected_line_start": 1,
+      "selected_line_end": 148,
+      "selected_line_count": 134,
+      "material_line_start": 5217,
+      "material_line_end": 5351
+    },
+    {
+      "path": "src/index.css",
+      "source_line_count": 169,
+      "blank_line_count": 20,
+      "selected_line_start": 1,
+      "selected_line_end": 169,
+      "selected_line_count": 149,
+      "material_line_start": 5352,
+      "material_line_end": 5501
+    },
+    {
+      "path": "scripts/subdue_intelligence.py",
+      "source_line_count": 184,
+      "blank_line_count": 24,
+      "selected_line_start": 1,
+      "selected_line_end": 184,
+      "selected_line_count": 160,
+      "material_line_start": 5502,
+      "material_line_end": 5662
+    }
+  ],
+  "safe_software_filename": "Subdue订阅管理软件"
+}

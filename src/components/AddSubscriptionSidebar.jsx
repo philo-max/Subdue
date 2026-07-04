@@ -3,54 +3,7 @@ import { X, Search, ChevronRight, Clipboard } from "lucide-react";
 import { calculateNextBilling } from "../services/billingCalculator";
 import { parseBillingText } from "../services/billingParser";
 
-// Extensive catalogue of common global and local subscriptions
-const SERVICE_CATALOG = [
-  { name: "Netflix", amount: 35, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "Spotify", amount: 15, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "Disney+", amount: 28, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "YouTube Premium", amount: 18, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "iCloud+ 200GB", amount: 21, currency: "CNY", cycle: "月", category: "云存储" },
-  { name: "Google One 100GB", amount: 15, currency: "CNY", cycle: "月", category: "云存储" },
-  { name: "Dropbox Plus", amount: 860, currency: "CNY", cycle: "年", category: "云存储" },
-  { name: "ChatGPT Plus", amount: 20, currency: "USD", cycle: "月", category: "AI工具" },
-  { name: "Claude Pro", amount: 20, currency: "USD", cycle: "月", category: "AI工具" },
-  { name: "GitHub Copilot", amount: 10, currency: "USD", cycle: "月", category: "AI工具" },
-  { name: "Midjourney", amount: 30, currency: "USD", cycle: "月", category: "AI工具" },
-  { name: "Notion Plus", amount: 8, currency: "USD", cycle: "月", category: "生产力" },
-  { name: "Microsoft 365 Personal", amount: 398, currency: "CNY", cycle: "年", category: "生产力" },
-  { name: "Adobe Creative Cloud", amount: 198, currency: "CNY", cycle: "月", category: "设计工具" },
-  { name: "1Password", amount: 25, currency: "CNY", cycle: "月", category: "生产力" },
-  { name: "Keep 会员", amount: 19, currency: "CNY", cycle: "月", category: "健身" },
-  { name: "爱奇艺 VIP", amount: 25, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "腾讯视频 VIP", amount: 25, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "优酷 VIP", amount: 25, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "B站大会员", amount: 15, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "网易云音乐 黑胶", amount: 15, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "QQ音乐 绿钻", amount: 15, currency: "CNY", cycle: "月", category: "流媒体" },
-  { name: "微信读书 无限卡", amount: 19, currency: "CNY", cycle: "月", category: "生产力" },
-  { name: "淘宝 88VIP", amount: 88, currency: "CNY", cycle: "年", category: "购物会员" },
-  { name: "京东 PLUS", amount: 99, currency: "CNY", cycle: "年", category: "购物会员" },
-  { name: "盒马 X 会员", amount: 258, currency: "CNY", cycle: "年", category: "购物会员" },
-  { name: "美团外卖 神会员", amount: 15, currency: "CNY", cycle: "月", category: "购物会员" },
-  { name: "Nintendo Switch Online", amount: 155, currency: "CNY", cycle: "年", category: "流媒体" },
-  { name: "PlayStation Plus", amount: 428, currency: "CNY", cycle: "年", category: "流媒体" },
-  { name: "Xbox Game Pass Ultimate", amount: 110, currency: "CNY", cycle: "月", category: "流媒体" },
-];
-
-const CATEGORY_COLORS = {
-  流媒体: "#D9852B",
-  AI工具: "#7C93B3",
-  生产力: "#6FA287",
-  设计工具: "#9C84B0",
-  云存储: "#5FA9A0",
-  健身: "#BD7B7E",
-  购物会员: "#B9A36B",
-  其他: "#8B93A1",
-};
-
-const CURRENCIES = ["CNY", "USD", "EUR", "JPY"];
-const CYCLES = ["周", "月", "季", "年"];
-const CATEGORIES = Object.keys(CATEGORY_COLORS);
+import { SERVICE_CATALOG, CATEGORY_COLORS, CURRENCIES, CYCLES, CATEGORIES } from "../services/serviceCatalog";
 
 export default function AddSubscriptionSidebar({ isOpen, onClose, onSave, editingSub = null }) {
   const [step, setStep] = useState(1); // 1: Search & Template list, 2: Form edit

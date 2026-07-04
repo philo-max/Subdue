@@ -15,20 +15,10 @@ import { syncClient, MobileSubscription } from "../../services/syncClient";
 import { calculateNextBilling } from "../../services/billingCalculator";
 import { SymbolView } from "expo-symbols";
 import { notificationHelper } from "../../services/notificationHelper";
-
-const CATEGORIES = ["流媒体", "软件服务", "AI工具", "日常打卡", "其他"];
-const CURRENCIES = ["CNY", "USD", "HKD"];
-const CYCLES = ["月", "年", "周", "季"];
-
-// Built-in presets for quick autocomplete
-const SERVICE_PRESETS = [
-  { name: "Netflix", category: "流媒体", defaultAmount: 35, currency: "CNY", cycle: "月" },
-  { name: "Spotify", category: "流媒体", defaultAmount: 15, currency: "CNY", cycle: "月" },
-  { name: "iCloud", category: "软件服务", defaultAmount: 6, currency: "CNY", cycle: "月" },
-  { name: "ChatGPT Plus", category: "AI工具", defaultAmount: 20, currency: "USD", cycle: "月" },
-  { name: "YouTube Premium", category: "流媒体", defaultAmount: 22, currency: "USD", cycle: "月" },
-  { name: "Nintendo Switch Online", category: "其他", defaultAmount: 155, currency: "HKD", cycle: "年" },
-];
+import { GlassCard } from "../../components/GlassCard";
+import { SubscriptionRow } from "../../components/SubscriptionRow";
+import { StatCard } from "../../components/StatCard";
+import { SERVICE_CATALOG, CATEGORIES, CURRENCIES, CYCLES } from "../../services/serviceCatalog";
 
 export default function TabOneScreen() {
   const [subscriptions, setSubscriptions] = useState<MobileSubscription[]>([]);
@@ -100,10 +90,10 @@ export default function TabOneScreen() {
   // Autocomplete auto-fill when input matches presets
   const handleNameChange = (text: string) => {
     setFormName(text);
-    const match = SERVICE_PRESETS.find(p => p.name.toLowerCase() === text.trim().toLowerCase());
+    const match = SERVICE_CATALOG.find(p => p.name.toLowerCase() === text.trim().toLowerCase());
     if (match) {
       setFormCategory(match.category);
-      setFormAmount(match.defaultAmount.toString());
+      setFormAmount(match.amount.toString());
       setFormCurrency(match.currency);
       setFormCycle(match.cycle);
     }
@@ -211,23 +201,12 @@ export default function TabOneScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Estimated Expenses Card */}
-      <View style={styles.glassCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardSubtitle}>🗓️ 本月预计订阅支出 (已折算月付)</Text>
-          <SymbolView name="chart.pie.fill" tintColor="#F5A623" size={16} />
-        </View>
-        <View style={styles.statsContainer}>
-          <Text style={styles.primaryAmountText}>¥ {getMonthlyTotalCNY()}</Text>
-          <Text style={styles.secondaryAmountText}>≈ $ {getMonthlyTotalUSD()}</Text>
-        </View>
-        <View style={styles.statsDivider} />
-        <View style={styles.metaRow}>
-          <Text style={styles.metaText}>共监控 {subscriptions.length} 笔服务</Text>
-          <Text style={styles.metaText}>
-            {subscriptions.filter(s => s.currency === "USD").length} 笔外币支出
-          </Text>
-        </View>
-      </View>
+      <StatCard
+        totalCNY={getMonthlyTotalCNY()}
+        totalUSD={getMonthlyTotalUSD()}
+        totalCount={subscriptions.length}
+        foreignCount={subscriptions.filter(s => s.currency === "USD").length}
+      />
 
       {/* Category distribution */}
       {subscriptions.length > 0 && (
@@ -244,7 +223,7 @@ export default function TabOneScreen() {
       )}
 
       {/* Subscriptions detail list */}
-      <View style={styles.glassCard}>
+      <GlassCard>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>🗂 手机本地账单明细 ({subscriptions.length})</Text>
           <View style={styles.actionHeaderButtons}>
@@ -254,35 +233,13 @@ export default function TabOneScreen() {
           </View>
         </View>
         
-        {subscriptions.map(item => {
-          const isUrgent = (item.daysLeft ?? 99) <= 5;
-          return (
-            <TouchableOpacity 
-              key={item.uuid} 
-              style={styles.subRow} 
-              onLongPress={() => handleDelete(item)}
-              activeOpacity={0.7}
-            >
-              <View style={styles.subInfo}>
-                <Text style={styles.subName}>{item.name}</Text>
-                <View style={styles.subMetaContainer}>
-                  <View style={[styles.dotIndicator, { backgroundColor: item.currency === "USD" ? "#5B8DEF" : "#2ED573" }]} />
-                  <Text style={styles.subMeta}>{item.category} · {item.cycle}付</Text>
-                </View>
-              </View>
-              <View style={styles.subPrice}>
-                <Text style={styles.subAmount}>
-                  {item.currency === "USD" ? "$" : "¥"}{item.amount}
-                </Text>
-                <View style={[styles.daysBadge, isUrgent ? styles.daysBadgeUrgent : styles.daysBadgeNormal]}>
-                  <Text style={[styles.daysBadgeText, isUrgent ? styles.daysTextUrgent : styles.daysTextNormal]}>
-                    {item.daysLeft === 0 ? "今天到期" : `${item.daysLeft}天后扣款`}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+        {subscriptions.map(item => (
+          <SubscriptionRow
+            key={item.uuid}
+            item={item}
+            onLongPress={handleDelete}
+          />
+        ))}
 
         {subscriptions.length === 0 && (
           <View style={styles.emptyContainer}>
@@ -291,7 +248,7 @@ export default function TabOneScreen() {
             <Text style={styles.emptySubtext}>点击右上角 [+ 新增] 手动录入，或在 [同步与助手] 选项卡中上传截图及连接电脑同步</Text>
           </View>
         )}
-      </View>
+      </GlassCard>
       
       <Text style={styles.footerHint}>💡 长按账单行可以删除该订阅并取消到期推送</Text>
 

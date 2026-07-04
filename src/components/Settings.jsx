@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Download, Upload, Trash2, RefreshCw, Sun, Moon, Laptop, Smartphone, Check, Wifi, AlertCircle } from "lucide-react";
 import { currencyService } from "../services/currency";
 import { syncService, MOCK_DEVICES } from "../services/syncService";
+import { parseCSVBilling } from "../services/billingParser";
+import { storage } from "../db/storage";
 
 export default function Settings({
   settings,
@@ -19,7 +21,12 @@ export default function Settings({
   const [selectedScenario, setSelectedScenario] = useState("both");
   const [syncLogs, setSyncLogs] = useState([]);
   
+  // CSV Import States
+  const [showCSVModal, setShowCSVModal] = useState(false);
+  const [csvCandidates, setCsvCandidates] = useState([]);
+  
   const fileInputRef = useRef(null);
+  const csvFileInputRef = useRef(null);
 
   // Sync statuses checking
   const handleCurrencyChange = (e) => {
@@ -65,7 +72,7 @@ export default function Settings({
             alert("数据导入成功！");
           }
         } else {
-          alert("无效的数据格式！导入文件必须是包含订阅数组的 JSON 格式。");
+          alert("无效的数据格式！导入文件必须是包含订阅数组 of JSON 格式。");
         }
       } catch (err) {
         alert("文件解析失败，请确保是正确的 JSON 文件。");
@@ -73,6 +80,73 @@ export default function Settings({
     };
     reader.readAsText(file);
     e.target.value = "";
+  };
+
+  // CSV Importer Logic
+  const triggerCSVFileInput = () => {
+    csvFileInputRef.current?.click();
+  };
+
+  const handleCSVFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target?.result;
+        const candidates = parseCSVBilling(text);
+        if (candidates.length === 0) {
+          alert("未在 CSV 账单中检测到明显的周期性订阅扣款记录。请确保 CSV 包含『时间』、『金额』、『商品描述/商户名称』等列，且存在重复扣费。");
+          return;
+        }
+        setCsvCandidates(candidates.map((c, idx) => ({ ...c, checked: true, tempId: idx })));
+        setShowCSVModal(true);
+      } catch (err) {
+        console.error(err);
+        alert("CSV 解析失败，请确保格式正确。");
+      }
+    };
+    reader.readAsText(file, "gbk"); // Read GBK for Alipay/WeChat Chinese CSV exports
+    e.target.value = "";
+  };
+
+  const toggleCandidate = (idx) => {
+    setCsvCandidates(prev => prev.map((c, i) => i === idx ? { ...c, checked: !c.checked } : c));
+  };
+
+  const updateCandidateField = (idx, field, value) => {
+    setCsvCandidates(prev => prev.map((c, i) => i === idx ? { ...c, [field]: value } : c));
+  };
+
+  const handleConfirmCSVImport = async () => {
+    const selected = csvCandidates.filter(c => c.checked);
+    if (selected.length === 0) {
+      alert("请至少选择一项要导入的订阅账单！");
+      return;
+    }
+
+    try {
+      for (const item of selected) {
+        await storage.addSubscription({
+          name: item.name,
+          amount: item.amount,
+          currency: item.currency,
+          cycle: item.cycle,
+          category: item.category,
+          firstBilledAt: item.firstBilledAt,
+          notes: `自 CSV 账单智能分析导入。置信度：${Math.round(item.confidence * 100)}%。原因为：${item.reason}`
+        });
+      }
+      alert(`🎉 成功导入 ${selected.length} 笔订阅账单！`);
+      setShowCSVModal(false);
+      if (onSyncCompleted) {
+        await onSyncCompleted();
+      }
+    } catch (e) {
+      console.error(e);
+      alert("导入失败，请检查数据库状态。");
+    }
   };
 
   // LAN Pairing & Merge Simulation Handlers
@@ -506,6 +580,18 @@ export default function Settings({
             style={{ display: "none" }}
           />
 
+          {/* CSV Import */}
+          <button onClick={triggerCSVFileInput} style={actionButtonStyle}>
+            <Upload size={15} /> 导入账单 (CSV)
+          </button>
+          <input
+            type="file"
+            ref={csvFileInputRef}
+            onChange={handleCSVFileChange}
+            accept=".csv"
+            style={{ display: "none" }}
+          />
+
           {/* Reset */}
           <button
             onClick={() => {
@@ -521,9 +607,252 @@ export default function Settings({
           </button>
         </div>
       </section>
+
+      {/* CSV Import Modal */}
+      {showCSVModal && (
+        <div style={modalOverlayStyle}>
+          <div style={modalContentStyle}>
+            <div style={modalHeaderStyle}>
+              <h3 style={{ margin: 0, color: "var(--color-paper)", fontSize: "16px", fontWeight: "bold" }}>
+                📊 CSV 账单智能导入助手
+              </h3>
+              <button 
+                onClick={() => setShowCSVModal(false)} 
+                style={{ 
+                  background: "none", 
+                  border: "none", 
+                  color: "var(--color-muted)", 
+                  fontSize: "20px", 
+                  cursor: "pointer",
+                  lineHeight: 1
+                }}
+              >
+                &times;
+              </button>
+            </div>
+            
+            <p style={{ fontSize: "13px", color: "var(--color-muted)", marginBottom: "16px", lineHeight: "1.5" }}>
+              系统已自动分析账单中的交易记录，并智能识别出以下 <strong>{csvCandidates.length}</strong> 笔潜在的周期性订阅服务。请勾选并确认要导入的账单：
+            </p>
+
+            <div style={modalScrollAreaStyle}>
+              {csvCandidates.map((candidate, idx) => (
+                <div key={idx} style={candidateCardStyle(candidate.checked)}>
+                  <input
+                    type="checkbox"
+                    checked={candidate.checked}
+                    onChange={() => toggleCandidate(idx)}
+                    style={{ width: "16px", height: "16px", cursor: "pointer", marginTop: "4px" }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px" }}>
+                      <input
+                        type="text"
+                        value={candidate.name}
+                        onChange={(e) => updateCandidateField(idx, "name", e.target.value)}
+                        style={inlineInputStyle}
+                      />
+                      <span style={confidenceBadgeStyle(candidate.confidence)}>
+                        {Math.round(candidate.confidence * 100)}% 置信度
+                      </span>
+                    </div>
+                    <div style={candidateMetaRowStyle}>
+                      <span>周期：</span>
+                      <select
+                        value={candidate.cycle}
+                        onChange={(e) => updateCandidateField(idx, "cycle", e.target.value)}
+                        style={inlineSelectStyle}
+                      >
+                        <option value="周">周付</option>
+                        <option value="月">月付</option>
+                        <option value="季">季付</option>
+                        <option value="年">年付</option>
+                      </select>
+
+                      <span style={{ marginLeft: "8px" }}>金额：</span>
+                      <input
+                        type="number"
+                        value={candidate.amount}
+                        onChange={(e) => updateCandidateField(idx, "amount", Number(e.target.value))}
+                        style={{ ...inlineInputStyle, width: "65px" }}
+                      />
+
+                      <select
+                        value={candidate.currency}
+                        onChange={(e) => updateCandidateField(idx, "currency", e.target.value)}
+                        style={inlineSelectStyle}
+                      >
+                        <option value="CNY">CNY</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="HKD">HKD</option>
+                      </select>
+                    </div>
+                    <div style={{ fontSize: "11px", color: "var(--color-muted)", marginTop: "8px", opacity: 0.8 }}>
+                      💡 识别依据：{candidate.reason}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={modalFooterStyle}>
+              <button 
+                onClick={() => setShowCSVModal(false)} 
+                style={{ ...cancelButtonStyle, padding: "8px 16px" }}
+              >
+                取消
+              </button>
+              <button 
+                onClick={handleConfirmCSVImport} 
+                style={{ 
+                  ...actionButtonStyle, 
+                  backgroundColor: "var(--color-copper, #F5A623)", 
+                  color: "#07090F",
+                  border: "none",
+                  padding: "8px 20px"
+                }}
+              >
+                确认导入选中项 ({csvCandidates.filter(c => c.checked).length} 笔)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+// Modal styles
+const modalOverlayStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(7, 9, 15, 0.85)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 1000,
+  backdropFilter: "blur(6px)",
+  padding: "20px"
+};
+
+const modalContentStyle = {
+  backgroundColor: "var(--color-surface-1, #0D1018)",
+  border: "1px solid var(--color-border, rgba(255,255,255,0.08))",
+  borderRadius: "16px",
+  width: "100%",
+  maxWidth: "600px",
+  maxHeight: "80vh",
+  display: "flex",
+  flexDirection: "column",
+  padding: "24px",
+  color: "var(--color-paper, #E2E6EF)",
+  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4)",
+  boxSizing: "border-box"
+};
+
+const modalHeaderStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  borderBottom: "1px solid rgba(255,255,255,0.06)",
+  paddingBottom: "14px",
+  marginBottom: "16px"
+};
+
+const modalScrollAreaStyle = {
+  overflowY: "auto",
+  flex: 1,
+  paddingRight: "6px",
+  gap: "12px",
+  display: "flex",
+  flexDirection: "column",
+  marginBottom: "8px"
+};
+
+const candidateCardStyle = (checked) => ({
+  backgroundColor: checked ? "rgba(245, 166, 35, 0.03)" : "rgba(255,255,255,0.01)",
+  border: checked ? "1px solid var(--color-copper, #F5A623)" : "1px solid var(--color-border, rgba(255,255,255,0.06))",
+  borderRadius: "12px",
+  padding: "16px",
+  transition: "all 0.2s ease",
+  display: "flex",
+  alignItems: "flex-start",
+  gap: "14px",
+  boxSizing: "border-box"
+});
+
+const inlineInputStyle = {
+  backgroundColor: "transparent",
+  border: "none",
+  borderBottom: "1px dashed rgba(255,255,255,0.2)",
+  color: "var(--color-paper, #E2E6EF)",
+  fontSize: "14px",
+  fontWeight: "700",
+  padding: "2px 4px",
+  outline: "none",
+  width: "180px"
+};
+
+const inlineSelectStyle = {
+  backgroundColor: "var(--color-surface-2, #111520)",
+  border: "1px solid var(--color-border, rgba(255,255,255,0.08))",
+  color: "var(--color-muted, #8B93A1)",
+  fontSize: "12px",
+  borderRadius: "6px",
+  padding: "2px 6px",
+  cursor: "pointer",
+  outline: "none"
+};
+
+const confidenceBadgeStyle = (conf) => {
+  const isHigh = conf > 0.8;
+  const isMed = conf > 0.5;
+  return {
+    backgroundColor: isHigh ? "rgba(46, 213, 115, 0.15)" : isMed ? "rgba(245, 166, 35, 0.15)" : "rgba(139, 147, 161, 0.15)",
+    color: isHigh ? "#2ED573" : isMed ? "#F5A623" : "#8B93A1",
+    fontSize: "11px",
+    fontWeight: "700",
+    padding: "3px 10px",
+    borderRadius: "12px",
+    border: `1px solid ${isHigh ? "rgba(46, 213, 115, 0.2)" : isMed ? "rgba(245, 166, 35, 0.2)" : "rgba(139, 147, 161, 0.2)"}`
+  };
+};
+
+const candidateMetaRowStyle = {
+  display: "flex",
+  alignItems: "center",
+  fontSize: "12px",
+  color: "var(--color-muted, #8B93A1)",
+  marginTop: "10px",
+  flexWrap: "wrap",
+  gap: "8px"
+};
+
+const modalFooterStyle = {
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "12px",
+  borderTop: "1px solid rgba(255,255,255,0.06)",
+  paddingTop: "16px",
+  marginTop: "16px"
+};
+
+const cancelButtonStyle = {
+  backgroundColor: "transparent",
+  border: "1px solid var(--color-border)",
+  borderRadius: "var(--border-radius-md)",
+  color: "var(--color-paper)",
+  cursor: "pointer",
+  fontSize: "13px",
+  fontWeight: 600,
+  transition: "var(--transition-smooth)",
+  padding: "8px 16px"
+};
+
 
 const sectionTitleStyle = {
   fontSize: "16px",

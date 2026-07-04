@@ -1,0 +1,50 @@
+name: Build and Upload Android APK
+
+on:
+  push:
+    tags:
+      - 'v*' # 仅在推送形如 v1.0.0 的 tag 时触发自动打包发布
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Setup Expo and EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: |
+          cd mobile
+          npm ci
+
+      - name: Build APK on EAS
+        run: |
+          cd mobile
+          npx eas-cli build -p android --profile preview --non-interactive --local=false
+
+      - name: Download APK from EAS Build
+        run: |
+          cd mobile
+          # 提取最新一次构建的 APK 链接并下载
+          APK_URL=$(npx eas-cli build:list --platform android --profile preview --limit 1 --json --non-interactive | jq -r '.[0].artifacts.buildUrl')
+          curl -L $APK_URL -o subdue-mobile.apk
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: mobile/subdue-mobile.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
