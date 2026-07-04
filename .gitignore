@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Software Copyright (RuanZhu) & Planning materials
+/软件著作权申请资料/
+/files/Subdue-软著材料准备与排版指南.md
+/task_plan.md
+/findings.md
+/progress.md
